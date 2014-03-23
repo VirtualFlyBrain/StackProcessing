@@ -1,0 +1,10 @@
+#!/bin/bash
+# Memory-maps generated woolz files. 
+# For esach found woolz (woolz_name.wlz), renames it to woolz_name.wlz.obj, then creates memory mapping object woolz_name.wlz
+# Therefore, no wlz_meta change is involved. 
+# Invoke: find . -name "*.wlz"|xargs -ti ./processWlz.bsh {}
+set -x
+#Bear in mind the ps itself creates process count = 1, so increasse this by 1
+cp $1 $1'.obj'
+/disk/data/VFBTools/Woolz2013Full/bin/WlzTiledObjFromDomain -o $1 -c $1'.obj'
+

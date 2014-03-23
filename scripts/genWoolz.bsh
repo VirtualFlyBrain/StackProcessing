@@ -1,0 +1,51 @@
+#!/bin/bash
+# Exploads the warped .nrrd file as a series of tiffs ; then creates woolz out of these
+# Params: 
+# 1: nrrd file to be processed
+# 2: the "base directory " - where all the files are stored and where the results will be written
+# NB: has to be run from the loopThroughFiles.bsh to loop through all nrrds in a folder
+
+echo "Processing file: " $1 "Base dir: " $2
+export baseDir=$2 
+export sriptDir='/partition/karenin2/IMAGE_DATA/Nestor_Procesing/ImageManipulation/scripts/'
+export woolzDir='/disk/data/VFBTools/Woolz2012/bin/'
+export fijiBin='/disk/data/VFBTools/Fiji/fiji-linux64'
+
+# YOu have to be in the the root of the individual stack folder for starters
+#Creating Woolz file: exploding LSM->TIFF
+dirName=`echo $1| sed s/.nrrd//`
+echo "dir name: "$dirName
+mkdir $dirName $dirName/tiff/ $dirName/out/ $dirName/reg/ $dirName/reg/wlz/  
+cp $1 $dirName
+script=$fijiBin' -macro '$sriptDir'nrrd2tiff.ijm '$dirName' -batch'
+echo "Executing script: "$script
+$script
+
+#Creating Woolz file: Creating woolz
+ls $dirName/tiff/*.tif > $dirName/out/out.txt 
+
+script=$woolzDir'WlzExtFFConstruct3D -o '$dirName'/reg/wlz/002.wlz -f '$dirName'/out/out.txt'
+echo "Folder: "$dirName 
+echo "Script: " $script
+$script
+echo "Created woolz!"
+
+# Converting Woolz: Creating alpha woolz
+# WlzGreySetRange -L0 -U0 SG.wlz > BL.wlz
+# WlzGreySetRange -L255 -U255 SG.wlz > MX.wlz
+# WlzRGBCombine -o rgbaSG.wlz -a null MX.wlz BL.wlz SG.wlz
+
+#cd $dirName/reg/wlz/
+#script=$woolzDir"WlzGreySetRange -L0 -U0 002.wlz > 002BL.wlz"
+#$script
+
+#script=$woolzDir"WlzGreySetRange -L255 -U255 002.wlz > MX.wlz"
+#$script
+
+#script=$woolzDir"WlzRGBCombine -o rgba002.wlz -a null MX.wlz 002BL.wlz 002.wlz"
+#$script
+
+#script=$woolzDir"/bin/WlzSetVoxelSize -x1 -y1 -z1.5 rgba002.wlz > 002.wlz"
+#$script
+
+#echo "Converted woolz successfully!"

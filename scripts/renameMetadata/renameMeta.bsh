@@ -1,0 +1,38 @@
+#!/bin/bash
+# Script used to rename long names to short for stack folders and metadata for 
+# Janelia farm data set
+# Reads values from the csv.
+# CSV structure: [long name],[short name].
+# After launch, waits for input of the csv file name. 
+
+# Wait for input
+set -x
+folder=`pwd`
+echo "Enter the file name"
+read ips
+
+index=0
+# Read the file to an array
+while read line ; do
+	#echo $line
+	MYARRAY[$index]="$line"
+	index=$(($index+1))
+done < $ips
+echo "current folder: " $folder
+cd $folder
+pwd
+sleep 5
+# For each member of array, do required transformations using "mv" and "sed" commands
+for i in ${MYARRAY[@] }; 
+	do echo $i; 
+	set -- "$i" 
+	IFS=","; declare -a Array=($*) 
+	mv $folder/${Array[0]} $folder/${Array[1]}
+	#echo $cmd
+	#$cmd 
+	sed -i s:${Array[0]}:${Array[1]}: ${Array[1]}/wlz_meta/tiledImageModelData.jso
+	#echo $cmd
+	#$cmd
+done
+
+

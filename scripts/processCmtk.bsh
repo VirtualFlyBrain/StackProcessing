@@ -1,0 +1,62 @@
+#!/bin/bash
+# Initial processing of the uploaded .lsm file: 
+# 1. Exploads the converted .lsm file as a series of tiffs ; then creates woolz out of these
+# 2. Creates initial .nrrd file of the .lsm
+# @param: $1 - folder to process, $2 - rotation x $3 - rotation y $4 - rotation z $5 - reverse orientation?
+
+#Include and init all the path variables
+. /usr/local/tomcat-6/webapps/vfbStacks/scripts/initVarsLsmCmtk.bsh
+export cmtkDir=$stacksDir$1/'cmtk'
+export sriptDir=$sriptDir'cmtk/'
+export metaDir=$stacksDir'wlz_meta_warped/'
+
+date
+# You have to be in the the root of the stacks folder for starters
+cd $stacksDir
+echo "Curr dir:"`pwd`
+mkdir -v $cmtkDir $cmtkDir/nrrd/ $cmtkDir/nrrd/nc82 $cmtkDir/nrrd/signal $cmtkDir/wlz_meta
+
+echo "Copying meta file..."
+script='cp '$metaDir'tiledImageModelData.jso '$1'/cmtk/wlz_meta'
+echo $script
+$script
+sedCmd="sed -i s:WLZ_PATH:$cmtkDir/wlz/: $cmtkDir/wlz_meta/tiledImageModelData.jso"
+$sedCmd
+sedCmd="sed -i s:STACK_NAME:$1.wlz: $cmtkDir/wlz_meta/tiledImageModelData.jso"
+$sedCmd
+
+export DISPLAY=:1
+Xvfb $DISPLAY -auth /dev/null &
+(
+# the '(' starts a new sub shell. In this sub shell we start the worker processes:
+echo Creating NRRD file
+script=$sriptDir"lsmrotate2nrrd.ijm \"dir="$1"&angle-x=$2&angle-y=$3&angle-z=$4&reverse=$5\" -batch"
+echo "Executing script: "$fijiBin -macro $script
+$fijiBin -macro $script
+wait # waits until all 'program' processes are finished
+     # this wait sees only the 'program' processes, not the Xvfb process
+)
+
+xformfile=$cmtkDir/xform.txt
+echo $1 > $xformfile
+
+echo Warping NRRD files
+mkdir $cmtkDir/warp $cmtkDir/warp/tiff $cmtkDir/warp/nrrd $cmtkDir/warp/nrrd/nc82 $cmtkDir/warp/nrrd/signal
+script=$sriptDir'mapto2666linux2FastWarp.py'
+echo "Executing script: "python $script $1
+#python $script $1
+
+echo Producing warped woolz
+script=$sriptDir'warpedNrrd2woolz.bsh'
+echo "Executing script: " $script $1
+#$script $1
+
+chmod -R --silent 777 $1
+date
+if [ -f  $cmtkDir/wlz/$1.wlz ]
+then
+    echo generating woolz: SUCCESS
+else
+    echo generating woolz: FAILED
+fi
+
