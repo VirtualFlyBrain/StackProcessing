@@ -1,0 +1,61 @@
+{
+   "webServer": "SERVER_NAME",
+   "iipServerPath": "/fcgi/wlziipsrv.fcgi",
+   "metadataRoot": "",
+   "toolsMetadataFilename": "/data/thirdparty/STACKS/3RDPARTY/Tzumin2013/wlz_meta/tiledImageToolParams.jso",
+   "interfaceImageDir": "/images/",
+   "dataType": "wlz",
+   "transverseView": {"pitch": "0", "yaw": "0", "roll": "0"},
+   "sagittalView": {"pitch": "90", "yaw": "90", "roll": "90"},
+   "coronalView": {"pitch": "90", "yaw": "0", "roll": "90"},
+   "viewerTargetId": "emapIIPViewerDiv",
+   "layerNames": [
+	  "background",
+      "signal",
+      "anatomy"
+   ],
+   "layerData": [
+      {  	     
+         "imageDir":"/usr/local/tomcat-6/webapps/vfb/data/flybrain/main/woolz/",
+         "imageName":"flybrain.wlz",
+         "type":"greyLevel",
+         "opacity":"1.0",
+         "visible":"true"
+      },
+      {  	     
+         "imageDir":"/usr/local/tomcat-6/webapps/vfbStacks/STACKS/3RDPARTY/Tzumin2013/XXX/wlz/",
+         "imageName":"002.wlz",
+         "type":"expression_layer",
+	"filter": {"red":0, "green":255, "blue":0},
+         "opacity":"1.0",
+         "visible":"true"
+      },
+      {
+         "imageDir":"/usr/local/tomcat-6/webapps/vfb/data/flybrain/main/woolz/",
+         "imageName":"flybrain.wlz",
+         "type":"label",
+         "opacity":"0.5",
+         "current":"",
+         "visible":"true",
+         "treeStructureFile": "/data/flybrain/main/tree/treeStructure.jso",
+         "treeDataFile": "/data/flybrain/main/tree/treeContent.jso"   
+        }
+   ],
+   "initialState": {"scale":"1.0", "distance":"0", "pitch":"0", "yaw":"0", "roll":"0"},
+   "pixelResolution": {"x":"1", "y":"1", "z":"1", "units":["\u03BC\u006D", "\u006D\u006D"]},
+   "menuStructureFile": "/data/flybrain/main/menu/menuStructure.jso",
+   "menuContentFile": "/data/flybrain/main/menu/menuContent.jso",
+   "wlzMode": "zeta",
+   "tools": [
+      "scale",
+      "distance",
+      "rotation",
+      "refresh",
+      "locator",
+      "layer",
+      "tree",
+      "properties"
+      ],
+   "tileframe": {"enabled": "true"}
+}
+
