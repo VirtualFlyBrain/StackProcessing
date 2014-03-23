@@ -4,9 +4,23 @@
 
 if [ -d ${1} ]
 then
+  if [ -d ${2} ]
+  then
+    echo "${2} already exists."
+  else
+    echo "creating ${2}.."
+    mkdir ${2}
+  fi
+else
+  echo "Error: Directory ${1} does not exist!"
+fi
+
+if [ -d ${1} ] && [ -d ${2} ]
+then
+  
   if [ -f ${1}/name_mapping.csv ]
   then
-    echo "name_mapping.csv found"
+    echo "name_mapping.csv found.."
     while IFS=, read col1 col2
     do
       if [ -f ${1}${col1}.nrrd ]
@@ -18,10 +32,10 @@ then
       fi
     done < ${1}/name_mapping.csv
   else
-    echo "name_mapping.csv not found"
+    echo "name_mapping.csv not found."
     echo "Moving: ${1}*.nrrd to ${2}"
     cp -v ${1}*.nrrd ${2}
   fi
 else
-  echo "Error: Directory ${1} does not exist!" 
+  echo "Error: Directory ${2} does not exist!" 
 fi
