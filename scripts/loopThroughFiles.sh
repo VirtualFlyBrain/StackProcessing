@@ -13,10 +13,10 @@ do
 		# Check the number of running processes 
 		# If it is lower than numProcesses start another process
 		# If it's greater, wait 10 s in a loop hoping that a process may finish
-		procCount=`ps axu |grep warpedNrrd2woolz.bsh|wc -l`
+		procCount=`ps axu |grep warpedNrrd2woolz.sh|wc -l`
 	        while [  $procCount -ge $numProcesses ]; do
 	             sleep 10
-		     procCount=`ps axu |grep warpedNrrd2woolz.bsh|wc -l`
+		     procCount=`ps axu |grep warpedNrrd2woolz.sh|wc -l`
 	        done
 		# Fire another process in background
     		../scripts/warpedNrrd2woolz.bsh $file .. &
