@@ -30,15 +30,17 @@ then
   #echo "Executing script: "$script
   $script
 
-  #Creating Woolz file: Creating woolz
-
-  script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '${dirName}'/'${fileName/.nrrd/.tif}
-  #echo "Folder: "$dirName 
-  echo "Script: " $script
-  $script
+  wait
   sleep 10
   if [ -f ${dirName}/${fileName/.nrrd/.tif} ]
   then
+    #Creating Woolz file: Creating woolz
+
+    script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '${dirName}'/'${fileName/.nrrd/.tif}
+    #echo "Folder: "$dirName 
+    echo "Script: " $script
+    $script
+
     echo "Created woolz!"
 
     cd $dirName/wlz/
