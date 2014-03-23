@@ -19,27 +19,21 @@ export fijiBin='/disk/data/VFBTools/Fiji/ImageJ-linux64'
 #Creating Woolz file: exploding LSM->TIFF
 dirName=`echo $1| sed s/.nrrd//`
 echo "dir name: "$dirName
-mkdir $dirName $dirName/tiff/ $dirName/out/ $dirName/wlz/  
-#mv $1 $dirName
+mkdir $dirName $dirName/wlz/  
+
 python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$1
 rm $1
-script=$fijiBin' -macro '$sriptDir'nrrd2tiff.ijm '$dirName' -batch'
+script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}/${1}' -batch'
 #echo "Executing script: "$script
 $script
 
 #Creating Woolz file: Creating woolz
-#ls $dirName/tiff/*.tif > $dirName/out/out.txt 
 
-script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '$dirName'/tiff/'$dirName'.tif'
+script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '$dirName'/'${1/.nrrd/.tif}
 #echo "Folder: "$dirName 
 echo "Script: " $script
 $script
 echo "Created woolz!"
-
-# Converting Woolz: Creating alpha woolz
-# WlzGreySetRange -L0 -U0 SG.wlz > BL.wlz
-# WlzGreySetRange -L255 -U255 SG.wlz > MX.wlz
-# WlzRGBCombine -o rgbaSG.wlz -a null MX.wlz BL.wlz SG.wlz
 
 cd $dirName/wlz/
 script=$woolzDir"WlzThreshold -v2 0020.wlz"
@@ -50,22 +44,12 @@ script=$woolzDir"WlzSetVoxelSize -x1 -y1 -z1.5 0021.wlz"
 echo "Script4: " $script
 eval $script > ./002.wlz
 
-cd $dirName/wlz/
-script=$woolzDir"WlzThreshold -v1 0021.wlz"
-echo "Theshold: " $script
-#eval $script > ./0022.wlz
-
-cd $dirName/wlz/
-script=$woolzDir"WlzSetBackground -b0 0022.wlz"
-echo "Theshold: " $script
-#eval $script > ./002.wlz
-
 rm ./0020.wlz ./0021.wlz 
 echo "Converted woolz successfully!"
 
 echo "Processing metadata:"
 cd ../../
-rm -rf $dirName/tiff $dirName/out/
+rm  $dirName/*.tif
 rm  $dirName/*.nrrd 
 pwd
 cp -rfv './wlz_meta' ./$dirName
