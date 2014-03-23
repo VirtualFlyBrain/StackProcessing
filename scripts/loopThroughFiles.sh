@@ -5,7 +5,7 @@
 # scripts are in the folder one level above)
 set -x
 #Bear in mind the ps itself creates process count = 1, so increasse this by 1
-numProcesses=5
+numProcesses=13
 
 export DISPLAY=:1
 Xvfb $DISPLAY -auth /dev/null &
