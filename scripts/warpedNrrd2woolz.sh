@@ -26,7 +26,7 @@ nice python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$fileNam
 if [ -f $dirName/$fileName ]
 then
   rm $1
-  script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}/${fileName}' -batch'
+  script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}'/'${fileName}' -batch'
   #echo "Executing script: "$script
   $script
 
