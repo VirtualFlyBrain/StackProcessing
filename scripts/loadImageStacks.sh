@@ -16,6 +16,11 @@ else
   echo "Error: Directory ${1} does not exist!"
 fi
 
+if [ -f ${1}MissingFiles.log ]
+then
+  rm ${1}MissingFiles.log
+fi
+
 if [ -d ${1} ] && [ -d ${2} ]
 then
   
