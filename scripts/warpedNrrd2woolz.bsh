@@ -66,7 +66,7 @@ echo "Converted woolz successfully!"
 echo "Processing metadata:"
 cd ../../
 rm -rf $dirName/tiff $dirName/out/
-#rm  $dirName/*.nrrd 
+rm  $dirName/*.nrrd 
 pwd
 cp -rfv './wlz_meta' ./$dirName
 rm './'$dirName'/wlz_meta/tiledImageToolParams.jso'
