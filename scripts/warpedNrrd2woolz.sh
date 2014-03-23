@@ -52,7 +52,7 @@ cd ../../
 rm  $dirName/*.tif
 rm  $dirName/*.nrrd 
 pwd
-cp -rfv './wlz_meta' ./$dirName
+cp -rfv '../wlz_meta' ./$dirName
 rm './'$dirName'/wlz_meta/tiledImageToolParams.jso'
 echo $dirName
 dir=`echo $dirName |sed 's/.\///'` 
