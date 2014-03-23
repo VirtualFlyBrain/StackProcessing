@@ -19,7 +19,7 @@ do
 		     procCount=`ps axu |grep warpedNrrd2woolz.sh|wc -l`
 	        done
 		# Fire another process in background
-    		../scripts/warpedNrrd2woolz.bsh $file .. &
+    		../scripts/warpedNrrd2woolz.sh $file .. &
 	fi
 done
 
