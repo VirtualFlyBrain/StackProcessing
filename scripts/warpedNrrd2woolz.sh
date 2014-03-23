@@ -20,6 +20,7 @@ export fijiBin='/disk/data/VFBTools/Fiji/ImageJ-linux64'
 dirName=`echo $1| sed s/.nrrd//`
 echo "dir name: "$dirName
 mkdir $dirName $dirName/wlz/  
+fileName=${1/.\//}
 
 python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$1
 rm $1
