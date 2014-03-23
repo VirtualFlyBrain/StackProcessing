@@ -12,8 +12,8 @@ cd $2
 export baseDir=`pwd`
 cd -
 export sriptDir='../scripts/'
-export woolzDir='/disk/data/VFBTools/Woolz2013Full/bin/'
-export fijiBin='/disk/data/VFBTools/Fiji/ImageJ-linux64'
+export woolzDir='nice /disk/data/VFBTools/Woolz2013Full/bin/'
+export fijiBin='nice xvfb-run /disk/data/VFBTools/Fiji/ImageJ-linux64'
 
 # YOu have to be in the the root of the individual stack folder for starters
 #Creating Woolz file: exploding LSM->TIFF
@@ -22,41 +22,56 @@ echo "dir name: "$dirName
 mkdir $dirName $dirName/wlz/  
 fileName=${1/.\//}
 
-python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$1
-rm $1
-script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}/${1}' -batch'
-#echo "Executing script: "$script
-$script
+nice python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$fileName
+if [ -f $dirName/$fileName ]
+then
+  rm $1
+  script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}/${fileName}' -batch'
+  #echo "Executing script: "$script
+  $script
 
-#Creating Woolz file: Creating woolz
+  #Creating Woolz file: Creating woolz
 
-script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '${dirName}'/'${${1/.nrrd/.tif}/.\//}
-#echo "Folder: "$dirName 
-echo "Script: " $script
-$script
-echo "Created woolz!"
+  script=$woolzDir'WlzExtFFConvert -f tif -F wlz -o '$dirName'/wlz/0020.wlz '${dirName}'/'${fileName/.nrrd/.tif}
+  #echo "Folder: "$dirName 
+  echo "Script: " $script
+  $script
+  if [ -f ${dirName}/${fileName/.nrrd/.tif} ]
+  then
+    echo "Created woolz!"
 
-cd $dirName/wlz/
-script=$woolzDir"WlzThreshold -v2 0020.wlz"
-echo "Theshold: " $script
-eval $script > ./0021.wlz
+    cd $dirName/wlz/
+    script=$woolzDir"WlzThreshold -v2 0020.wlz"
+    echo "Theshold: " $script
+    eval $script > ./0021.wlz
 
-script=$woolzDir"WlzSetVoxelSize -x1 -y1 -z1.5 0021.wlz"
-echo "Script4: " $script
-eval $script > ./002.wlz
-
-rm ./0020.wlz ./0021.wlz 
-echo "Converted woolz successfully!"
-
-echo "Processing metadata:"
-cd ../../
-rm  $dirName/*.tif
-rm  $dirName/*.nrrd 
-pwd
-cp -rfv '../wlz_meta' ./$dirName
-rm './'$dirName'/wlz_meta/tiledImageToolParams.jso'
-echo $dirName
-dir=`echo $dirName |sed 's/.\///'` 
-sedCmd="sed -i s:XXX:"$dir": $dirName/wlz_meta/tiledImageModelData.jso"
-$sedCmd
-
+    script=$woolzDir"WlzSetVoxelSize -x1 -y1 -z1.5 0021.wlz"
+    echo "Script4: " $script
+    eval $script > ./002.wlz
+    if [ -f ./002.wlz ]
+    then
+      rm ./0020.wlz ./0021.wlz 
+      echo "Converted woolz successfully!"
+    else
+      echo "Error creating woolz!"
+      echo ${dirName} >> ../../Error.log
+    fi
+    echo "Processing metadata:"
+    cd ../../
+    rm  $dirName/*.tif
+    rm  $dirName/*.nrrd 
+    pwd
+    cp -rfv '../wlz_meta' ./$dirName
+    rm './'$dirName'/wlz_meta/tiledImageToolParams.jso'
+    echo $dirName
+    dir=`echo $dirName |sed 's/.\///'` 
+    sedCmd="sed -i s:XXX:"$dir": $dirName/wlz_meta/tiledImageModelData.jso"
+    $sedCmd
+  else
+    echo "Error creating tif!"
+    echo ${dirName} >> Error.log
+  fi
+else
+  echo "Error at bounding stage!"
+  echo ${dirName} >> Error.log
+fi
