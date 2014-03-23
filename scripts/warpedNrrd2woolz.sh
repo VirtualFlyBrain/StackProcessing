@@ -36,6 +36,7 @@ then
   #echo "Folder: "$dirName 
   echo "Script: " $script
   $script
+  sleep 10
   if [ -f ${dirName}/${fileName/.nrrd/.tif} ]
   then
     echo "Created woolz!"
