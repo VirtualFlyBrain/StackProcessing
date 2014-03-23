@@ -1,6 +1,6 @@
 #!/bin/bash
 # copies origianl NRRD files from AlignedData/XXX/ to WoolzData/XXX/ converting name using a name_mapping.csv file if one exists.
-# run in StackProcessing directory: script/renameFromCSV.sh AlignedData/XXX/ WoolzData/XXX/
+# run in StackProcessing directory: scripts/loadImageStacks.sh AlignedData/XXX/ WoolzData/XXX/
 
 if [ -d ${1} ]
 then
@@ -29,6 +29,7 @@ then
         cp ${1}${col1}.nrrd ${2}${col2}.nrrd
       else
         echo "Error: ${1}${col1}.nrrd not found!"
+        echo ${1}${col1}.nrrd >> ${1}MissingFiles.log
       fi
     done < ${1}/name_mapping.csv
   else
