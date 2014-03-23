@@ -6,6 +6,10 @@
 set -x
 #Bear in mind the ps itself creates process count = 1, so increasse this by 1
 numProcesses=5
+
+export DISPLAY=:1
+Xvfb $DISPLAY -auth /dev/null &
+(
 for file in $1/*nrrd
 do
 	if [[ -f $file ]]; then	
@@ -23,3 +27,5 @@ do
 	fi
 done
 
+wait
+)
