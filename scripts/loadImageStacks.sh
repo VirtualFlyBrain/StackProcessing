@@ -10,6 +10,7 @@ then
   else
     echo "creating ${2}.."
     mkdir ${2}
+    cp .gitignore ${2}
   fi
 else
   echo "Error: Directory ${1} does not exist!"
