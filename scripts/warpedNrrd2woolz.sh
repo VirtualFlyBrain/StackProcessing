@@ -21,10 +21,11 @@ dirName=`echo $1| sed s/.nrrd//`
 echo "dir name: "$dirName
 mkdir $dirName $dirName/wlz/  
 fileName=${1/.\//}
-mv $1 $dirName/$fileName
+
+nice python /disk/data/VFBTools/python\ packages/Bound.py 3 $1 $dirName/$fileName
 if [ -f $dirName/$fileName ]
 then
-  nice python /disk/data/VFBTools/python\ packages/Bound.py 3 $dirName/$fileName
+  rm $1
   script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}'/'${fileName}' -batch'
   echo "Executing script: "$script
   $script
