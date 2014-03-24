@@ -64,6 +64,7 @@ then
     else
       echo "Error creating woolz!"
       echo ${dirName} >> ../../Error.log
+      cp ../$fileName ../../
     fi
     echo "Processing metadata:"
     cd ../../
@@ -79,6 +80,7 @@ then
   else
     echo "Error creating tif!"
     echo ${dirName} >> Error.log
+    cp $dirName/$fileName ./
   fi
 else
   echo "Error at bounding stage!"
