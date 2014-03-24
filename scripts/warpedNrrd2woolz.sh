@@ -6,7 +6,7 @@
 # It is presumed that the metadata (wlz_meta) folder should be in the same folder with all the images
 # NB: has to be run from the loopThroughFiles.bsh to loop through all nrrds in a folder
 #NB: Should be run from the folder where all the nrrd files stored
-set -x 
+#set -x 
 echo "Processing file: " $1 "Base dir: " $2
 cd $2
 export baseDir=`pwd`
@@ -27,7 +27,7 @@ if [ -f $dirName/$fileName ]
 then
   rm $1
   script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}'/'${fileName}' -batch'
-  #echo "Executing script: "$script
+  echo "Executing script: "$script
   $script
 
   wait
