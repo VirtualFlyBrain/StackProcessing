@@ -13,7 +13,7 @@ export baseDir=`pwd`
 cd -
 export sriptDir='../scripts/'
 export woolzDir='nice /disk/data/VFBTools/Woolz2013Full/bin/'
-export fijiBin='nice /disk/data/VFBTools/Fiji/ImageJ-linux64 -headless'
+export fijiBin='nice /disk/data/VFBTools/Fiji/ImageJ-linux64 --headless'
 
 # YOu have to be in the the root of the individual stack folder for starters
 #Creating Woolz file: exploding LSM->TIFF
