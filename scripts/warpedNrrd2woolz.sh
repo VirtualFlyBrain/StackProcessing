@@ -34,6 +34,9 @@ then
   if [ ! -f ${dirName}/${fileName/.nrrd/.tif} ]
   then
     sleep $RANDOM
+    $script
+    wait
+    sleep 1
   fi
   if [ -f ${dirName}/${fileName/.nrrd/.tif} ]
   then
