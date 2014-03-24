@@ -27,14 +27,6 @@ if [ -f $dirName/$fileName ]
 then
   rm $1
   script=$fijiBin' -macro '$sriptDir'nrrd2tif.ijm '${dirName}'/'${fileName}' -batch'
-  
-  procCount=`ps axu |grep nrrd2tiff|wc -l`
-  while [  $procCount -ge 2 ]; do
-	  sleep 3
-	  echo "Waiting for gap.." 
-	  procCount=`ps axu |grep nrrd2tiff|wc -l`
-	done
-	
   echo "Executing script: "$script
   $script
 
