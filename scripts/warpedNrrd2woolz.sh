@@ -31,13 +31,7 @@ then
   $script
 
   wait
-  if [ ! -f ${dirName}/${fileName/.nrrd/.tif} ]
-  then
-    sleep $RANDOM
-    $script
-    wait
-    sleep 1
-  fi
+  sleep 1
   if [ -f ${dirName}/${fileName/.nrrd/.tif} ]
   then
     #Creating Woolz file: Creating woolz
