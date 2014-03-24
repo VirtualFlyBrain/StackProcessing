@@ -29,3 +29,4 @@ done
 
 wait
 )
+cp */*.nrrd ./
