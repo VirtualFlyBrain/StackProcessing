@@ -77,6 +77,7 @@ then
     dir=`echo $dirName |sed 's/.\///'` 
     sedCmd="sed -i s:XXX:"$dir": $dirName/wlz_meta/tiledImageModelData.jso"
     $sedCmd
+    sed -i "s:YYY:${PWD##*/}:g" ${dirName}/wlz_meta/tiledImageModelData.jso
   else
     echo "Error creating tif!"
     echo ${dirName} >> Error.log
@@ -87,5 +88,5 @@ else
   echo ${dirName} >> Error.log
 fi
 cp -rfv ../wlz_meta ./
-find . -name "tiledImageModelData.jso" -exec sed -i "s:YYY:${PWD##*/}:g" '{}' \;
+
 
