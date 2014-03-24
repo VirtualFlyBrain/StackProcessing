@@ -55,7 +55,7 @@ then
     eval $script > ./0021.wlz
 
     script=$woolzDir"WlzSetVoxelSize -x1 -y1 -z1.5 0021.wlz"
-    echo "Script4: " $script
+    echo "VoxelSize: " $script
     eval $script > ./002.wlz
     if [ -f ./002.wlz ]
     then
