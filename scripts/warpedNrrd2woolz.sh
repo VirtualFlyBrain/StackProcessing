@@ -81,3 +81,6 @@ else
   echo "Error at bounding stage!"
   echo ${dirName} >> Error.log
 fi
+cp -rfv ../wlz_meta ./
+find . -name "tiledImageModelData.jso" -exec sed -i "s:YYY:${PWD##*/}:g" '{}' \;
+
